@@ -1,0 +1,43 @@
+name: Validate WalidForge
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Validate catalog and adapters
+        run: |
+          node scripts/validate-skills.js
+          node scripts/run-evals.js --min-rank1 95
+          node scripts/validate-reference-links.js
+          node scripts/validate-commands.js
+          node scripts/validate-artifact-paths.js
+          node scripts/validate-versions.js
+      - name: Test tools
+        run: node --test scripts/*-test.js scripts/lib/*-test.js
+      - name: Test hooks
+        run: |
+          bash hooks/session-start-test.sh
+          bash hooks/sdd-cache-test.sh
+          bash hooks/simplify-ignore-test.sh

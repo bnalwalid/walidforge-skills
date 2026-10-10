@@ -1,0 +1,19 @@
+---
+description: Implement one verified task, or continue the authorized plan with auto
+---
+
+Invoke walidforge-skills:incremental-implementation alongside walidforge-skills:test-driven-development skills.
+
+Task arguments: $ARGUMENTS
+
+Mode: empty arguments select the next ready task; auto or all select the remaining authorized plan. Other arguments identify the requested task or scope. Preserve this distinction rather than assuming every invocation means the whole plan.
+
+Locate the approved specification (SPEC.md, docs/SPEC.md or the project's designated external system), tasks/plan.md and the task list target (default tasks/todo.md). Read actual source and unfinished user changes. When requirements are established but a plan is missing, prepare it through planning-and-task-breakdown within existing authorization. Resolve missing decisions before their dependent work.
+
+For each selected task: read acceptance criteria, establish relevant baseline, add and observe the required behavioral RED check, implement GREEN, refactor if useful, then run the boundary/regression/build checks appropriate to that slice. Documentation and reversible presentation changes use proportionate verification.
+
+Record evidence before marking completion. Commit verified slices when committing is part of the authorized workflow, staging exact task changes and preserving unrelated work. A dirty tree is a reason to inspect ownership or use isolation, not to discard work or demand cleanup reflexively.
+
+In auto mode, continue dependency-ready tasks without repeated approval. Diagnose failures with debugging-and-error-recovery; stop only dependent work when unresolved decisions, unavailable required evidence or actions outside authority prevent progress. Auth, payment or storage code can be implemented under existing scope; destructive production operations, publishing and deployment require their actual authority.
+
+Deliver completed outcomes, checks, commits if made, limitations and next incomplete action. Do not push or release as an implied side effect.

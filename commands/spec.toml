@@ -1,0 +1,13 @@
+description = "Draft architecture and behavior before implementation"
+
+prompt = """
+Invoke spec-driven-development skill.
+
+Task arguments: use the arguments supplied by this host.
+
+Read the request and current project conventions. Reuse known requirements and ask only for consequential missing decisions. Compare credible architecture options against the actual constraints, then document ownership, data flow, normal/failure behavior and verification.
+
+For independently testable capabilities, propose stable module ids and dependency order before per-module specifications; obtain missing boundary approval without repeating approval already given. Use SPEC.md or docs/SPEC.md unless an existing specification system owns the artifacts.
+
+Deliver a reviewable specification and open decisions. A specification-only invocation does not implement code. Continue to planning/building only when that work is included in the user's authorized scope.
+"""

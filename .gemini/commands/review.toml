@@ -1,0 +1,13 @@
+description = "Review the actual change by consequence and evidence"
+
+prompt = """
+Invoke code-review-and-quality skill.
+
+Task arguments: {{args}}
+
+Review the requested diff or current change against its specification and surrounding code. Examine affected correctness, readability, architecture, security and performance boundaries. A review request does not silently implement fixes.
+
+Lead with supported high-impact findings. Give each finding severity, source location, triggering condition, consequence and remedy. Use Critical, Required, Optional/Consider, Nit or FYI consistently; do not create cosmetic findings to populate every axis.
+
+Inspect tests and verify available evidence. State readiness within the reviewed scope, blockers and untested boundaries. Do not merge or publish based on the verdict.
+"""

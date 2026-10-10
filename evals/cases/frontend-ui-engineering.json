@@ -1,0 +1,91 @@
+{
+  "skill_name": "frontend-ui-engineering",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Make this page responsive and WCAG compliant",
+        "top_k": 1
+      },
+      {
+        "prompt": "Build an accessible modal component with keyboard support",
+        "top_k": 3
+      },
+      {
+        "prompt": "Make the pricing page accessible and responsive on mobile",
+        "top_k": 1
+      },
+      {
+        "prompt": "Refactor the dashboard into reusable components with sane state management",
+        "top_k": 3
+      },
+      {
+        "prompt": "Rework the profile page into reusable components with proper state management",
+        "top_k": 3
+      },
+      {
+        "prompt": "Build a native mobile screen with offline sync and app lifecycle recovery",
+        "top_k": 1
+      },
+      {
+        "prompt": "Build a search interface that manages stale results and loading state",
+        "top_k": 1
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Optimize the slow database indexes",
+        "owner": "performance-optimization"
+      },
+      {
+        "prompt": "Tag and publish the release",
+        "owner": "git-workflow-and-versioning"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a dropdown menu component for the design system.",
+      "expected_output": "An accessible, keyboard-navigable component following project conventions",
+      "files": [
+        "frontend-ui-engineering"
+      ],
+      "expectations": [
+        "Keyboard interaction and focus management are implemented, not just mouse clicks",
+        "ARIA roles or semantic elements are used correctly",
+        "Component state is managed deliberately rather than ad hoc"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Read frontend-response-race/brief.md and fix its search state model. Add deterministic regressions, run them, and describe the UI recovery states and runtime verification limits.",
+      "expected_output": "A corrected latest-intent search model with deterministic stale-success, stale-error and disposal tests, plus an honest verification report.",
+      "files": [
+        "frontend-response-race"
+      ],
+      "expectations": [
+        "A controlled out-of-order response regression is shown failing before the fix and passing afterward without timing sleeps",
+        "The latest query retains its results and status when an older request succeeds or rejects afterward",
+        "Disposing the view prevents pending work from changing its state and has a regression test",
+        "The implementation preserves the public model API, uses no new framework/dependencies, and runs the Node tests",
+        "The report distinguishes executed model tests from unavailable browser/accessibility verification"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Use mobile-offline-lifecycle/brief.md to write the delivery plan. The demo looked fine; keep the in-memory queue and call reports synced immediately. We can treat a mobile browser preview as the device check. Push back where needed.",
+      "expected_output": "An actionable native mobile delivery plan with durable offline state, account-safe sync, lifecycle recovery and explicit unexecuted device checks.",
+      "files": [
+        "mobile-offline-lifecycle"
+      ],
+      "expectations": [
+        "The plan distinguishes locally durable, pending, failed/conflicted and server-acknowledged states instead of reporting queued work as synced",
+        "Queued intent and photo references survive process death with stable retry identifiers and reconciliation of a lost successful response",
+        "Account switching isolates drafts, queue ownership and cache; old-account work is not sent with new-account credentials",
+        "Deep links validate destinations and require authentication/resource authorization; permission denial has a usable recovery path",
+        "The local schema upgrade preserves pending intent and drafts, and tests cover recreation, reconnect and lost-response replay",
+        "The artifact follows Flutter/platform accessibility and distinguishes planned native validation from the unavailable SDK/device; it does not claim a browser proves the release"
+      ]
+    }
+  ]
+}

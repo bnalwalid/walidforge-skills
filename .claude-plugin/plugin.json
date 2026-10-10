@@ -1,0 +1,20 @@
+{
+  "name": "walidforge-skills",
+  "version": "1.0.0",
+  "description": "Senior engineering workflows for backend, frontend, mobile and DevOps, with practical verification from specification to release.",
+  "author": {
+    "name": "bnalwalid",
+    "url": "https://github.com/bnalwalid"
+  },
+  "homepage": "https://github.com/bnalwalid/walidforge-skills",
+  "repository": "https://github.com/bnalwalid/walidforge-skills",
+  "license": "MIT",
+  "commands": [
+    "./.claude/commands",
+    "./commands"
+  ],
+  "skills": "./skills",
+  "experimental": {
+    "evals": "evals/plugin"
+  }
+}

@@ -1,0 +1,2 @@
+- [ ] Persist account-scoped reset token
+- [ ] Validate reset expiry

@@ -1,0 +1,59 @@
+{
+  "skill_name": "observability-and-instrumentation",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Add structured logging and metrics to the checkout service",
+        "top_k": 3
+      },
+      {
+        "prompt": "Set up tracing so we can follow a request across services",
+        "top_k": 3
+      },
+      {
+        "prompt": "What alerts should we page on for this new endpoint?",
+        "top_k": 3
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Simplify this over-clever component",
+        "owner": "code-simplification"
+      },
+      {
+        "prompt": "Draft the PRD for the referral program"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Instrument a new payment-retry feature so on-call can operate it.",
+      "expected_output": "On-call questions defined first, then structured logs, RED metrics, and symptom-based alerts that answer them",
+      "files": [
+        "observability-and-instrumentation"
+      ],
+      "expectations": [
+        "On-call questions are written before instrumentation is added",
+        "Logs are structured events with a correlation id, not prose strings",
+        "Metrics avoid unbounded label cardinality",
+        "Alerts are symptom-based and actionable"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Read brief.md and write an observability plan for these operating questions.",
+      "expected_output": "An operating signal plan mapping durable-job failure questions to safe events, bounded metrics and actionable alerts.",
+      "files": [
+        "observe-artifact-jobs"
+      ],
+      "expectations": [
+        "Operating questions precede selection of logs, metrics and traces",
+        "Telemetry distinguishes logical jobs from attempts and durable completion from upload success",
+        "Metric labels avoid unbounded account, filename and arbitrary URL values",
+        "Alerts have a symptom, response owner/runbook and evidence needed to validate delivery",
+        "The artifact is a plan, without invented production observations"
+      ]
+    }
+  ]
+}

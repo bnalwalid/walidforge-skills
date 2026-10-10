@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "walidforge-skills",
+  "description": "Production-grade engineering skills for AI coding agents \u2014 covering the full software development lifecycle from spec to ship.",
+  "owner": {
+    "name": "bnalwalid",
+    "url": "https://github.com/bnalwalid"
+  },
+  "plugins": [
+    {
+      "name": "walidforge-skills",
+      "version": "1.0.0",
+      "source": {
+        "source": "github",
+        "repo": "bnalwalid/walidforge-skills"
+      },
+      "description": "Production-grade engineering skills covering every phase of software development: spec, plan, build, verify, review, and ship.",
+      "homepage": "https://github.com/bnalwalid/walidforge-skills",
+      "license": "MIT",
+      "keywords": [
+        "skills",
+        "agents",
+        "engineering",
+        "spec",
+        "tdd",
+        "review",
+        "ship"
+      ]
+    }
+  ]
+}

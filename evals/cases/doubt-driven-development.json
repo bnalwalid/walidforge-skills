@@ -1,0 +1,58 @@
+{
+  "skill_name": "doubt-driven-development",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "This change touches production auth, cross-examine every assumption before we proceed",
+        "top_k": 3
+      },
+      {
+        "prompt": "I am not confident in this approach, adversarially review my reasoning in a fresh context",
+        "top_k": 3
+      },
+      {
+        "prompt": "High-stakes migration tomorrow, stress the plan for hidden failure modes",
+        "top_k": 3
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "Format this file with prettier"
+      },
+      {
+        "prompt": "Write the changelog entry for the release",
+        "owner": "git-workflow-and-versioning"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Before running an irreversible data migration, subject the migration plan to adversarial review.",
+      "expected_output": "Claims extracted, doubts raised against each, reconciliation, and a go or stop verdict",
+      "files": [
+        "doubt-driven-development"
+      ],
+      "expectations": [
+        "Non-trivial claims in the plan are extracted and challenged individually",
+        "At least one assumption is tested rather than accepted",
+        "The verdict distinguishes verified claims from surviving doubts"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Read brief.md and challenge the retry design with evidence. No external reviewer is available.",
+      "expected_output": "Concrete disproof of the claimed retry safety, a hold verdict and honest review limits.",
+      "files": [
+        "doubt-replay-window"
+      ],
+      "expectations": [
+        "The analysis extracts retention, logical-key and unknown-provider-outcome claims individually",
+        "A concrete replay after 24 hours but within seven days demonstrates why a new key can repeat the logical payment",
+        "Timeout is treated as an unknown outcome requiring reconciliation rather than definitive rejection",
+        "Self-analysis is not claimed as independent review or a live provider test",
+        "The verdict separates demonstrated contradictions from surviving external uncertainties and does not mutate production"
+      ]
+    }
+  ]
+}

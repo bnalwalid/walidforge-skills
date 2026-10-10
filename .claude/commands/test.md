@@ -1,0 +1,13 @@
+---
+description: Verify changed behavior using the repository test environment
+---
+
+Invoke walidforge-skills:test-driven-development skill.
+
+Task arguments: $ARGUMENTS
+
+Discover the current stack, declared test command, fixtures and required environments. Read the requested behavior and actual assertions before selecting verification.
+
+For implementation or regression fixes, observe the intended failing behavioral check before changing code, then prove the complete contract and run appropriate regression checks. For a verification-only request, run and explain checks without silently modifying application code.
+
+When checks fail, use debugging-and-error-recovery to establish the cause. Never skip or weaken a required check just to obtain green. Separate unit, integration, browser, native and provider evidence in the result.

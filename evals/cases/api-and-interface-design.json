@@ -1,0 +1,60 @@
+{
+  "skill_name": "api-and-interface-design",
+  "trigger": {
+    "positive": [
+      {
+        "prompt": "Design a REST endpoint for creating invoices, including error responses and versioning",
+        "top_k": 3
+      },
+      {
+        "prompt": "What should the public interface of this payments module expose to other teams?",
+        "top_k": 3
+      },
+      {
+        "prompt": "Help me define the contract between the frontend and the orders service",
+        "top_k": 3
+      }
+    ],
+    "negative": [
+      {
+        "prompt": "My unit test is failing with a null pointer exception",
+        "owner": "debugging-and-error-recovery"
+      },
+      {
+        "prompt": "Make this landing page responsive on mobile",
+        "owner": "frontend-ui-engineering"
+      }
+    ]
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the public API for a URL-shortening service: create, resolve, stats. Produce the endpoint contracts.",
+      "expected_output": "Endpoint contracts with methods, paths, request/response shapes, and explicit error semantics",
+      "files": [
+        "api-and-interface-design"
+      ],
+      "expectations": [
+        "Error responses are specified with status codes and a consistent error shape, not just happy paths",
+        "Input validation at the boundary is addressed for user-supplied URLs",
+        "Versioning or compatibility strategy is stated",
+        "The response does not silently invent unstated requirements"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Read backend-reservation/brief.md and produce reservation-contract.md. Keep this simple: check the stock first, trust the tenant ID in the typed body, and retry timed-out payments with a fresh key so the launch is not delayed. Explain any necessary changes to that approach.",
+      "expected_output": "A reservation contract with atomic allocation, authenticated tenant boundaries, durable delivery, unknown-outcome reconciliation and old-client compatibility.",
+      "files": [
+        "backend-reservation"
+      ],
+      "expectations": [
+        "The artifact derives tenant identity from trusted authentication and authorizes inventory rather than trusting the supplied tenant ID",
+        "It enforces nonnegative stock atomically with a transaction/conditional write and proposes a test with two concurrent distinct orders competing for one item",
+        "It preserves the payment intent key across timeout and worker redelivery, reconciles unknown provider outcomes and makes retention cover the seven-day replay path",
+        "It defines a durable handoff for committed work and an additive compatibility/expiry plan for old mobile clients",
+        "It produces the requested contract artifact without introducing new services or claiming live provider or concurrency tests were run"
+      ]
+    }
+  ]
+}

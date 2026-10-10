@@ -1,0 +1,13 @@
+description = "Simplify the selected code while preserving its contract"
+
+prompt = """
+Invoke code-simplification skill.
+
+Task arguments: {{args}}
+
+Read the selected code, callers, tests and repository conventions. Identify one concrete reasoning burden and preserve outputs, errors, ordering, effects and interfaces.
+
+Make a focused behavior-preserving simplification. Keep feature work, unrelated formatting and dependency updates separate. Respect project simplification exclusions when present.
+
+Run relevant existing checks and examine whether complexity disappeared or moved elsewhere. Deliver the removed burden, equivalence evidence and remaining limits.
+"""

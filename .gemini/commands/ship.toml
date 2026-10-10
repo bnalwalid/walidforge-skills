@@ -1,0 +1,17 @@
+description = "Combine specialist evidence into a GO or NO-GO release decision"
+
+prompt = """
+Invoke shipping-and-launch skill.
+
+Task arguments: {{args}}
+
+Identify the source revision/artifact, target environment, changed contracts and requested release scope. Preparing a ship decision does not itself deploy.
+
+When independent reviewers are available and warranted, the command orchestrator may fan out read-only reviews to code-reviewer, security-auditor and test-engineer against the same artifact and contract. Personas do not spawn each other. Merge their reports in the main context. When delegation is unavailable or outside authority, conduct the applicable checks directly and state that independent review was not performed.
+
+Reconcile duplicate findings and verify their evidence. Assess applicable user-path, security, compatibility, performance, accessibility, documentation and operational gates. Required failures or unavailable required evidence remain blockers; do not reinterpret them as passing because of deadline pressure.
+
+Define rollout baseline, advance/hold/stop conditions, observation owner and recovery before GO. Account for data already written and external effects; code rollback alone may be unsafe.
+
+Deliver GO or NO-GO for the identified artifact/environment, blockers, accepted tradeoffs, evidence limits, recovery procedure and concrete path to resolve blockers. Execute deployment or communications only when explicitly within the user's authorized scope.
+"""

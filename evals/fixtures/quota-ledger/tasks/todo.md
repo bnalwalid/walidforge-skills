@@ -1,0 +1,12 @@
+- [ ] Q1: replay the original result without consuming quota twice
+  - Acceptance: same account/key/payload returns original response after another operation; other accounts stay independent
+  - Verify: focused replay and account-isolation checks, then python3 -m unittest -v
+  - Depends: none
+- [ ] Q2: reject payload conflicts without changing budget
+  - Acceptance: same account/key with another amount raises ValueError and preserves state
+  - Verify: payload-conflict check and existing suite
+  - Depends: Q1
+- [ ] Q3: a failed attempt does not reserve a successful key
+  - Acceptance: an insufficient-quota attempt can later use that key for a valid payload
+  - Verify: rejected-attempt/retry check and complete suite; report single-process/non-durable limits
+  - Depends: Q2

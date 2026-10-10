@@ -1,0 +1,44 @@
+name: Skill gap or misleading guidance
+description: Report a reproducible workflow gap so WalidForge can improve from real developer tasks.
+title: '[Skill gap] '
+body:
+  - type: input
+    id: skill
+    attributes:
+      label: Affected skill or tool
+      description: Skill name, or Project Doctor and the command you used.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Project context and intended outcome
+      description: Relevant stack, runtime, host and the behavior you needed.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Small input or sequence that demonstrates the gap. Replace private data with a minimal example.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior and evidence
+      description: What the agent or tool actually did, including checks that ran and checks that did not.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What a correct, useful result would look like in this project.
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround or suggested correction
+      description: Optional. Explain what worked without requiring a new skill or framework.
