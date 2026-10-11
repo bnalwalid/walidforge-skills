@@ -1,5 +1,8 @@
 # Start With the Project You Already Have
 
+For installation, the full skill catalog, practical examples and troubleshooting,
+see the [complete user guide](user-guide.md).
+
 WalidForge is a collection of developer workflows for agents that can load Markdown
 instructions. It adds a way to reason and verify; it does not require replacing your
 framework, folder layout or existing engineering process.

@@ -13,6 +13,13 @@ Maintained by [bnalwalid](https://github.com/bnalwalid). Repository:
 
 > Engineering defaults: [document the architecture before implementation](docs/walidforge-style.md), choose boundaries from project constraints, and show evidence for the delivered behavior. All stacks are welcome.
 
+## Learn the workflow
+
+Read the [complete user guide](docs/user-guide.md) for installation choices, all
+25 skills, practical examples, Doctor/Compass usage, change review and
+troubleshooting. Start with [the quick start](docs/user-guide.md#quick-start)
+for your first task.
+
 ## Start with your project
 
 From this checkout, inspect the project you want to work on:
@@ -36,6 +43,24 @@ build a feature, improve a boundary, prepare a release or explain a concept.
 No catalog memorization is required. See the
 [Developer Handbook](docs/developer-handbook.md) for daily tasks, supported
 markers, command provenance and limits.
+
+## Plan a change with evidence
+
+Change Compass links a feature or bug request to candidate source files, tests and
+possible direct consumers, then produces decision questions and a verification
+plan using Project Doctor command provenance:
+
+```bash
+node scripts/forge.js compass /path/to/project --intent "fix duplicate invoice" --kind bug
+node scripts/forge.js compass /path/to/project --intent "add account permissions" --json
+```
+
+It runs locally without a model account or network. Matching is lexical: include
+identifiers used by your project. Candidates require inspection, and no suggested
+command is executed. See [Change Compass](docs/change-compass.md) for the contract,
+coverage limits and what the report can establish. Save its JSON output before
+implementation, then use `--review --baseline /path/to/snapshot.json` to compare
+Git changes with the saved candidate paths. Review does not claim tests passed.
 
 ## How WalidForge earns trust
 
@@ -66,8 +91,8 @@ not hide behind a green build.
 
 ## Install
 
-The commands below target `bnalwalid/walidforge-skills`. Remote installation becomes
-available after this repository is created and its contents are pushed.
+The commands below target `bnalwalid/walidforge-skills`. Choose an installation
+that matches your host and verify which resources it carries.
 
 For hosts supported by the skills installer:
 
@@ -128,7 +153,7 @@ Read the [domain workflow guide](docs/senior-engineering.md),
 ## Validate the pack
 
 ```bash
-node --test scripts/forge-test.js
+node --test scripts/*-test.js scripts/lib/*-test.js
 node scripts/validate-skills.js
 node scripts/run-evals.js --min-rank1 95
 node scripts/validate-reference-links.js
@@ -139,8 +164,7 @@ bash hooks/session-start-test.sh
 ```
 
 [The validation workflow](.github/workflows/validate.yml) runs the local tooling
-and catalog checks on pull requests and pushes. Its first hosted execution
-remains pending until the repository is pushed.
+and catalog checks on pull requests and pushes. Hosted execution results must be checked for the revision being published.
 
 Structural checks validate packaging. Routing checks approximate discovery.
 Behavioral evaluations run separately and grade execution against realistic

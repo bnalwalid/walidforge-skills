@@ -1,5 +1,8 @@
 # WalidForge Developer Handbook
 
+For installation, the full skill catalog, practical examples and troubleshooting,
+see the [complete user guide](user-guide.md).
+
 Start with your task and the repository you have. WalidForge helps you understand,
 change and verify it using existing tools and conventions. It is useful to both
 new and experienced developers; explanation depth can change while the evidence
@@ -95,3 +98,33 @@ Try a workflow on representative tasks, record where it failed, and add a realis
 regression scenario. Extend the existing owner first. More skills, more rules and
 more confident language are not evidence of a better developer experience.
 See [contributing](../CONTRIBUTING.md) and [evaluations](../evals/README.md).
+
+## From a request to an evidence-linked plan
+
+Use [Change Compass](change-compass.md) before editing unfamiliar code:
+
+```bash
+node /path/to/walidforge-skills/scripts/forge.js compass /path/to/project --intent "invoice retry" --kind bug --json
+```
+
+Confirm the reported candidates, inspect the referenced lines and resolve its
+questions. Use the ordered plan with the existing specification, implementation
+and testing workflows. A source reference is a lead for investigation, not a
+complete impact analysis. The report keeps commands labelled as declared or
+candidate and does not claim they passed. An empty match needs relevant filename
+identifiers or manual discovery; it does not mean the change has no impact.
+
+### Inspect implementation changes
+
+Capture the planning report outside the project before implementation:
+
+```bash
+node /path/to/walidforge-skills/scripts/forge.js compass /path/to/project --intent "invoice retry" --kind bug --json > /tmp/invoice-plan.json
+node /path/to/walidforge-skills/scripts/forge.js compass /path/to/project --review --baseline /tmp/invoice-plan.json
+```
+
+Review compares Git changes since the saved commit with saved candidate paths.
+Confirm unmatched changes and inspect untouched candidates as needed. Pre-existing
+worktree changes are included because the baseline is a commit, not a copied
+worktree. Record executed checks separately; review does not execute them or
+establish completion. See the Compass contract for unavailable Git evidence.

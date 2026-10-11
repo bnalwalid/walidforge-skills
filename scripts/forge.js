@@ -192,7 +192,30 @@ function main(args) {
   const asJSON = args.includes('--json');
   try {
     if (args.length === 0 || (args.length === 1 && ['--help','-h'].includes(args[0]))) {
-      console.log('WalidForge\nUsage: node scripts/forge.js doctor [project-directory] [--json]\nRead-only diagnosis; no scripts, installs, network calls or project writes.'); return;
+      console.log('WalidForge\nUsage: node scripts/forge.js doctor [project-directory] [--json]\n       node scripts/forge.js compass [project-directory] --intent "change" [--kind feature|bug] [--json]\n       node scripts/forge.js compass [project-directory] --review --baseline snapshot.json [--json]\nRead-only diagnosis; no scripts, installs, network calls or project writes.'); return;
+    }
+    if (args[0] === 'compass') {
+      const values = {}; let directory;
+      for (let i = 1; i < args.length; i++) {
+        const arg = args[i];
+        if (arg === '--json') continue;
+        if (arg === '--review') { if (values.review) throw new Error('Duplicate review option.'); values.review = true; continue; }
+        if (['--intent', '--kind', '--baseline'].includes(arg)) {
+          if (values[arg] !== undefined || !args[i + 1] || args[i + 1].startsWith('--')) throw new Error('Missing or duplicate compass option.');
+          values[arg] = args[++i];
+        } else if (arg.startsWith('-') || directory !== undefined) throw new Error('Invalid compass arguments.');
+        else directory = arg;
+      }
+      const { compass, renderCompass } = require('./lib/compass');
+      const root = fs.realpathSync(path.resolve(directory || '.'));
+      let baseline;
+      if (values.review) {
+        if (!values['--baseline'] || values['--intent'] !== undefined || values['--kind'] !== undefined) throw new Error('Review requires --baseline and reuses its intent and kind.');
+        baseline = require('./lib/compass-review').loadBaseline(values['--baseline'], root);
+      } else if (values['--baseline']) throw new Error('--baseline requires --review.');
+      const d = compass(root, baseline?.intent ?? values['--intent'], baseline?.kind ?? values['--kind'] ?? 'feature');
+      if (baseline) d.review = require('./lib/compass-review').review(root, baseline);
+      console.log(asJSON ? JSON.stringify(d, null, 2) : renderCompass(d)); return;
     }
     if (args[0] !== 'doctor') throw new Error('Unknown command. Use doctor [project-directory] [--json].');
     const positionals = args.slice(1).filter(a => a !== '--json');
@@ -206,5 +229,5 @@ function main(args) {
     process.exitCode = 2;
   }
 }
-if (require.main === module) main(process.argv.slice(2));
 module.exports = { diagnose, render };
+if (require.main === module) main(process.argv.slice(2));
