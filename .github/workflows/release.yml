@@ -1,0 +1,83 @@
+name: Release WalidForge
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Validate catalog and adapters
+        run: |
+          node scripts/validate-skills.js
+          node scripts/run-evals.js --min-rank1 95
+          node scripts/validate-reference-links.js
+          node scripts/validate-commands.js
+          node scripts/validate-artifact-paths.js
+          node scripts/validate-versions.js
+      - name: Test tools
+        run: node --test scripts/*-test.js scripts/lib/*-test.js
+      - name: Test hooks
+        run: |
+          bash hooks/session-start-test.sh
+          bash hooks/sdd-cache-test.sh
+          bash hooks/simplify-ignore-test.sh
+      - name: Check release identity and notes
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const tag = process.env.RELEASE_TAG;
+          const version = JSON.parse(fs.readFileSync('plugin.json', 'utf8')).version;
+          if (!/^v\d+\.\d+\.\d+$/.test(tag) || tag !== `v${version}`) {
+            throw new Error('Release tag must match the stable manifest version.');
+          }
+          if (!fs.readFileSync(`docs/releases/${tag}.md`, 'utf8').trim()) {
+            throw new Error('Release notes must be present.');
+          }
+          NODE
+
+  publish:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release already exists; leaving it unchanged."
+          else
+            gh release create "$RELEASE_TAG" --verify-tag --latest \
+              --title "WalidForge $RELEASE_TAG" \
+              --notes-file "docs/releases/$RELEASE_TAG.md"
+          fi
